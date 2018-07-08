@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/statics/css/index_css.css" />
+    <link rel="stylesheet" href="/statics/css/calendar.css"/>
+    {% block head %}
+    <style>
+    .login_text ul li{
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    </style>
+    {% endblock %}
+</head>
+<body>
+<img src="/statics/img/logo-l.png" alt="" class="banner">
+<img src="/statics/img/logo.png" alt="" class="banner">
+<div class="menu">
+    <ul>
+        <li id="a"><a href="/index2/">首页</a></li>
+        <li id="b"><a href="/keyan/">科研</a></li>
+        <li id="c"><a href="/achievement/">成果</a></li>
+        <li id="d"><a href="/budget/">经费</a></li>
+        <li id="e"><a href="/performance/">绩效</a></li>
+        <li id="f"><a href="/information/">信息</a></li>
+        <li id="g"><a href="/change_password/">系统</a></li>
+        <li id="h"><a href="/property/">资产</a></li>
+    </ul>
+</div>
+<div class="content clearfix">
+    <div class="side_box">
+        {% block side_box %}
+            <div id="login">
+                <div class="login_text">
+                    <ul>
+                        <li>
+                            {% if user_identity == 0 %}
+                                欢迎登录，管理员用户：{{ username }}
+                            {% elif user_identity == 1 %}
+                                欢迎登录，教师用户：{{ username }}
+                            {% elif user_identity == 2 %}
+                                欢迎登录，学生用户：{{ username }}
+                            {% endif %}
+                        </li>
+                        <li><a href="/logout/">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+        {% endblock %}
+        <div id="calendar" class="calendar"style="margin-bottom: 0"></div>
+    </div>
+    <div class="content_box clearfix">
+        {% block content_box %}
+        <div class="content_text">
+            <div class="content_header">
+                新闻
+            </div>
+            <ul>
+                <li>太阳探测双超平台技术试验卫星工程立项综合论证评审会在京召开</li>
+                <li>《自然-通讯》发表谈哲敏教授课题组关于西北太平洋台风研究成果</li>
+                <li>胡文兵教授《Physics Reports》综述： 高分子链折叠的物理学</li>
+                <li>现代工程与应用科学学院朱嘉教授课题组在界面光热转换上取得最新...</li>
+                <li>《自然-通讯》发表肖敏、王晓勇课题组纳米晶团簇的单光子发射研究成果</li>
+                <li>第七届国际液晶光子学会议（SLCP 2018）圆满落幕</li>
+                <li>统筹规划，切实落实项目牵头承担单位法人责任</li>
+                <li>中国安科院起草的《京津冀协同应对事故灾难工作纲要》正式发布</li>
+            </ul>
+        </div>
+        <div class="content_text">
+            <div class="content_header">
+                科研管理办法
+            </div>
+            <ul>
+                <li>科技成果鉴定疑问解答</li>
+                <li>河北省自然科学基金资助项目成果鉴定流程</li>
+                <li>燕山大学科技成果鉴定流程</li>
+                <li>燕山大学科技成果鉴定所需材料及注意事项</li>
+                <li>科技成果鉴定规程</li>
+                <li>科学技术成果鉴定办法</li>
+                <li>燕山大学科技成果鉴定指南</li>
+                <li>国家科学技术奖</li>
+            </ul>
+        </div>
+        <div class="content_text">
+            <div class="content_header">
+                科研动态
+            </div>
+            <ul>
+                <li>国家发展改革委关于印发《增强制造业核心竞争力三年行动计划（2018-2020年）》的通知</li>
+                <li>《新一代人工智能发展规划》</li>
+                <li>科技部关于印发《“十三五”食品科技创新专项规划》的通知</li>
+                <li>科技部 交通运输部关于印发《“十三五”交通领域科技创新专项规划》的通知</li>
+                <li>科技部 国土资源部 海洋局关于印发《“十三五”海洋领域科技创新专项规划》的通知</li>
+                <li>科技部 环境保护部 气象局关于印发《“十三五”应对气候变化科技创新专项规划》的通知</li>
+                <li>科技部 环境保护部 住房城乡建设部 林业局 气象局关于印发《“十三五”环境领域科技创新专项规划》的通知</li>
+                <li>工业和信息化部办公厅关于成立智能制造专家咨询委员会的通知</li>
+            </ul>
+        </div>
+        <div class="content_text">
+            <div class="content_header">
+                通知
+            </div>
+            <ul>
+                <li>2018年6月7日组会通知</li>
+            </ul>
+        {% endblock %}
+    </div>
+    <div></div>
+</div>
+</div>
+<script src="/statics/jQuery/jquery-3.3.1.min.js"></script>
+<script src="/statics/jQuery/calendar.js"></script>
+    {% block script %}
+    <script>
+        $("#a>a").css("color","#FFFFFF");
+        cur_li=document.getElementById('a');
+        cur_li.style.backgroundColor="#3F3F3F";
+        cur_li.style.color="#FFFFFF";
+    </script>
+    {% endblock %}
+
+    <script>
+    function display_info(){
+        {#alert("wrong number")#}
+        {{ errorInfo|safe }}
+    }
+    display_info()
+</script>
+</body>
+</html>

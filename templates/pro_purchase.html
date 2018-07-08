@@ -1,0 +1,31 @@
+{% extends "property.html" %}
+{% block content_box %}
+    <div class="content_box_1">
+    <form action="/pro_purchase/" method="post" class="add_user">
+        <div class="budget_out_div">
+            <div>
+                <div>项目名称：</div>
+                <select name="task_id" id="">
+                    {% for i in info_list %}
+                        <option value="{{ i.task_id }}">{{ i.task_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <div>资产名称：</div>
+                <input type="text" name="property_name">
+            </div>
+            <div>
+                <div>资产价值（单位：元）：</div>
+                <input type="text" name="price">
+            </div>
+            <div>
+                <div>详细信息：</div>
+                <input type="text" name="detail_info">
+            </div>
+            <input type="submit" value="提交" class="submit">
+            {% csrf_token %}
+        </div>
+    </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>经费</title>
+    <style>
+        .task_info{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .task_info_title{
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+    }
+    .add_task_member{
+            width: 90%;
+            margin: 0 auto;
+        }
+    .content_font{
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .hide{
+        display: none;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    table{
+        table-layout:fixed;
+        empty-cells:show;
+        border-collapse: collapse;
+        margin:0 auto;
+        font-size: 16px;
+    }
+    td{
+        height:20px;
+        text-align: center;
+    }
+    table.t1{
+        border:1px solid #cad9ea;
+        color:#666;
+    }
+    table.t1 th {
+        height:30px;
+    }
+    table.t1 td,table.t1 th{
+        border:1px solid #cad9ea;
+        padding:0 1em 0;
+    }
+    table.t1 tr.a1{
+        background-color:#f5fafe;
+    }
+    </style>
+{% endblock %}
+{% block side_box %}
+     <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/budget/">经费信息</a></li>
+                <li><a href="/budget_out/">经费支出</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">项目编号</th>
+        <th width="40%">项目名称</th>
+        <th width="15%">项目负责人</th>
+        <th width="15%">项目类别</th>
+        <th width="15%">项目级别</th>
+        </thead>
+        {% for i in info_list %}
+            <tr class="a1">
+                <td>{{ i.task_id }}</td>
+                <td class="task_name">{{ i.task_name }}</td>
+                <td>{{ i.principle_id }}</td>
+                <td>{{ i.task_category }}</td>
+                <td>{{ i.task_rank }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <div class="content_box_2 hide">
+        <div class="task_info">
+        <div class="task_info_title">【经费详情】单位：万元</div>
+        <div class="task_info_content">
+            <div><div>项目名称：</div><div id='name'></div></div>
+            <div><div>设备费：</div><div id='b1'></div></div>
+            <div><div>&nbsp;&nbsp;(1)设备购置费：</div><div id='b1_1'></div></div>
+            <div><div>&nbsp;&nbsp;(2)设备试制费：</div><div id='b1_2'></div></div>
+            <div><div>&nbsp;&nbsp;(3)设备改造与租赁费：</div><div id='b1_3'></div></div>
+            <div><div>材料费：</div><div id='b2'></div></div>
+            <div><div>测试化验加工费：</div><div id='b3'></div></div>
+            <div><div>燃料动力费：</div><div id='b4'></div></div>
+            <div><div>差旅/会议/国际合作与交流费：</div><div id='b5'></div></div>
+            <div><div>出版/文献/信息传播/知识版权事务费：</div><div id='b6'></div></div>
+            <div><div>劳务费：</div><div id='b7'></div></div>
+            <div><div>专家咨询费：</div><div id='b8'></div></div>
+            <div><div>其他支出：</div><div id='b9'></div></div>
+            <div><div>经费余额：</div><div id='remaining'></div></div>
+            <div><div>经费总额：</div><div id='total'></div></div>
+        </div>
+        <div class="task_info_title">【经费支出明细】</div>
+    </div>
+    <table width=90% id="mytab"  border=1 class="t1">
+        <thead>
+        <th width=20%>申领经费人姓名</th>
+        <th width=20%>经费数额</th>
+        <th width=40%>汇入银行卡号</th>
+        <th width=20%>支出类型</th>
+        </thead>
+    </table>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script>
+        $("#d").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#d>a").css("color","#FFFFFF");
+        $(".a1:odd").css("background","#f5fafe");
+        $(".task_name").click(function() {
+        var task_id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/detail_budget_ajax/",
+            data: {task_id: task_id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_2").removeClass("hide");
+                $(".content_box_1").addClass("hide");
+                var div_obj = $(".task_info_content").children();
+                console.log(div_obj);
+                for (var i = 0; i < div_obj.length; i++) {
+                    div_obj.eq(i).addClass("clearfix");
+                    div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+                    div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+                }
+                $("#name").text(info[0]["task_name"]);
+                $("#b1_1").text(info[0]["b1_1"]);
+                $("#b1_2").text(info[0]["b1_2"]);
+                $("#b1_3").text(info[0]["b1_3"]);
+                $("#b1").text(info[0]["b1"]);
+                $("#b2").text(info[0]["b2"]);
+                $("#b3").text(info[0]["b3"]);
+                $("#b4").text(info[0]["b4"]);
+                $("#b5").text(info[0]["b5"]);
+                $("#b6").text(info[0]["b6"]);
+                $("#b7").text(info[0]["b7"]);
+                $("#b8").text(info[0]["b8"]);
+                $("#b9").text(info[0]["b9"]);
+                $("#remaining").text(info[0]["remaining"]);
+                $("#total").text(info[0]["total"]);
+                for (var i = 0; i < info[1].length; i++) {
+                    $(".t1").append("<tr class=\"a1\" id=\"b" + i + "\">\n" +
+                        "        <td>" + info[1][i]["username"] + "</td>\n" +
+                        "        <td>" + info[1][i]["number"] + "</td>\n" +
+                        "        <td>" + info[1][i]["to_credit_card"] + "</td>\n" +
+                        "        <td>" + info[1][i]["type"] + "</td>\n" +
+                        "    </tr>");
+                }
+                var div_obj = $(".task_info_content").children();
+                console.log(div_obj);
+                for (var i=0;i<div_obj.length;i++){
+                    div_obj.eq(i).addClass("clearfix");
+                    div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+                    div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+                }
+
+            }
+        });
+        });
+    </script>
+{% endblock %}

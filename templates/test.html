@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+   <html>
+   <head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Insert title here</title>
+   <script language="javascript" type="text/javascript"src="/statics/jQuery/jquery-3.3.1.min.js"></script>
+   <script language="javascript" type="text/javascript" src="/statics/jQuery/jquery.flot.js"></script>
+   <script language="javascript" type="text/javascript" src="/statics/jQuery/jquery.flot.pie.js"></script>
+
+   <script type="text/javascript">
+
+       $(function(){
+
+           var data = [
+               { label: "苹果",  data: 10},
+               { label: "香蕉",  data: 30},
+               { label: "西瓜",  data: 90},
+               { label: "葡萄",  data: 70},
+               { label: "柑橘",  data: 80},
+               { label: "菠萝",  data: 110}
+           ];
+
+           $.plot($("#pie1"), data, {
+               series: {
+                            pie: {
+                                       show: true //显示饼图
+                            }
+               },
+               legend: {
+                           show: false //不显示图例
+               }
+           });
+
+           $.plot($("#pie2"), data, {
+               series: {
+                   pie: {
+                       show: true //显示饼图
+                   }
+               }
+
+           });
+
+           $.plot($("#pie3"), data, {
+               series: {
+                   pie: {
+                       show: true,
+                       radius: 1, //半径
+                       label: {
+                           show: true,
+                           radius: 2/3,
+                           formatter: function(label, series){
+                               return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+                       },
+                       threshold: 0.03  //这个值小于0.03，也就是3%时，label就会隐藏
+                   }
+               }
+           },
+           legend: {
+               show: false
+           }
+       });
+
+
+        $.plot($("#pie4"), data,
+       {
+           series: {
+               pie: {
+                   show: true
+               }
+           },
+           grid: {
+               hoverable: true,
+               clickable: true
+           }
+       });
+
+       $("#pie4").bind("plothover", pieHover);
+       $("#pie4").bind("plotclick", pieClick);
+
+
+
+
+       });
+
+       function pieHover(event, pos, obj)
+   {
+       if (!obj)
+                   return;
+       percent = parseFloat(obj.series.percent).toFixed(2);
+       $("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
+   }
+
+   function pieClick(event, pos, obj)
+   {
+       if (!obj)
+                   return;
+       percent = parseFloat(obj.series.percent).toFixed(2);
+       alert(''+obj.series.label+': '+percent+'%');
+   }
+
+
+
+
+
+   </script>
+
+   <style>
+   div.graph
+           {
+               width: 400px;
+               height: 300px;
+               border: 1px dashed gainsboro;
+           }
+
+   </style>
+
+
+
+
+   </head>
+   <body>
+
+
+   <h3>饼图1</h3>
+   <div id="pie1" class="graph" ></div>
+   <hr>
+
+   <h3>饼图2</h3>
+   <div id="pie2" class="graph" ></div>
+   <hr>
+
+   <h3>饼图3</h3>
+   <div id="pie3" class="graph" ></div>
+   <hr>
+
+   <h3>饼图4</h3>
+   <div id="pie4" class="graph" ></div>
+   <div id="hover"></div>
+   <hr>
+
+   </body>
+   </html>

@@ -1,0 +1,140 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>经费支出</title>
+    <style>
+    .select_style{
+        padding: 0;
+        border: 0;
+    }
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    .add_task{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add_task_div{
+        position: relative;
+    }
+    .content_font{
+        height: 30px;
+        line-height: 30px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .submit {
+        padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+        top: 130px;
+        right: 20px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 16px;
+}
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/budget/">经费信息</a></li>
+                <li><a href="/budget_out/">经费支出</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+    <form action="/budget_out/" method="post" class="add_user">
+        <div class="budget_out_div">
+            <div>
+                <div>项目名称：</div>
+                <select name="task_id" class="select_style">
+                    {% for i in info_list %}
+                        <option value="{{ i.task_id }}">{{ i.task_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <div>经费数额：</div>
+                <input type="text" name="number">
+            </div>
+            <div>
+                <div>汇入银行卡号：</div>
+                <input type="text" name="to_credit_card">
+            </div>
+            <div>
+                <div>支出类型：</div>
+                <select name="type" id="" class="select_style">
+                    <option value ="1_1">设备购置费</option>
+                    <option value ="1_2">设备试制费</option>
+                    <option value ="1_3">设备改造与租赁费</option>
+                    <option value ="2">材料费</option>
+                    <option value ="3">测试化加工费</option>
+                    <option value ="4">燃料动力费</option>
+                    <option value ="5">差旅/会议/国际合作与交流费</option>
+                    <option value ="6">出版/文献/信息传播/知识产权事务费</option>
+                    <option value ="7">劳务费</option>
+                    <option value ="8">专家咨询费</option>
+                    <option value ="9">其他支出</option>
+                </select>
+            </div>
+            <input type="submit" value="提交" class="submit">
+            {% csrf_token %}
+        </div>
+    </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $("#d").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#d>a").css("color","#FFFFFF");
+        var div_obj = $(".budget_out_div").children();
+    console.log(div_obj);
+    for (var i=0;i<div_obj.length-1;i++){
+        div_obj.eq(i).addClass("clearfix");
+        div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+        div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,205 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "/*\nconsole.log(window.dataGlobal)\nconsole.log(window.dataRanking)\nconsole.log(window.dataPersonal)\n*/\nvar counter = {\n    'WeekLength': [\n\t\t['Length', '周时长'],\n\t\tfunction () {\n\t\t\tvar data = Math.round(dataPersonal.PlayerBase.game_length.sum / 60)\n\t\t\treturn [\n\t\t\t\tdata + ' minutes',\n\t\t\t\tdata + ' 分钟'\n\t\t\t]\n\t\t}\n\t],\n    'WeekTimes': [\n\t\t['Times', '周场次'],\n\t\tfunction () {\n\t\t\tvar data = Math.round(dataPersonal.PlayerBase.game_total.sum)\n\t\t\treturn [\n\t\t\t\tdata + ' times',\n\t\t\t\tdata + ' 局'\n\t\t\t]\n\t\t}\n\t],\n    'WeekWin': [\n\t\t['Win', '周胜场'],\n\t\tfunction () {\n\t\t\tvar data = Math.round(dataPersonal.PlayerBase.game_win.sum)\n\t\t\treturn [\n\t\t\t\tdata + ' times',\n\t\t\t\tdata + ' 局'\n\t\t\t]\n\t\t}\n\t],\n    'WeekWinRate': [\n\t\t['Win rate', '周胜率'],\n\t\tfunction () {\n\t\t\tvar rate = (dataPersonal.PlayerBase.game_win.sum / dataPersonal.PlayerBase.game_total.sum * 100).toFixed(2)\n\t\t\treturn [\n\t\t\t\trate + '%',\n\t\t\t\trate + '%'\n\t\t\t]\n\t\t}\n\t],\n\t'WeekMostUsed': [\n\t\t['Most used', '使用最多的英雄'],\n\t\tfunction () {\n\t\t\tvar item = dataPersonal.PlayerHeroes._sumMax.game_total\n\t\t\tvar heroID = item[0]\n\t\t\tvar times = item[1]\n\t\t\treturn [\n\t\t\t\t'Hero ' + heroID + ' was used ' + times + ' times',\n\t\t\t\t'英雄 ' + heroID + ' 被使用了 ' + times + ' 次'\n\t\t\t]\n\t\t}\n\t],\n//  add by Solaria(#11)\n    'WeekMostParty': [\n\t\t['Most party', '开黑最多的玩家'],\n\t\tfunction () {\n\t\t\tvar item = dataPersonal.PlayerMates._sumMax.game_length\n\t\t\tvar playerID = item[0]\n\t\t\tvar times = item[1]\n\t\t\treturn [\n\t\t\t\t'You played with ' + playerID + ' for ' + times + ' times',\n\t\t\t\t'您与 ' + playerID + ' 进行了 ' + times + ' 场游戏'\n\t\t\t]\n\t\t}\n\t],\n\t'WeekMostParty': [\n\t\t['Most party', '开黑最多的玩家'],\n\t\tfunction () {\n\t\t\tvar item = dataPersonal.PlayerMates._sumMax.game_length\n\t\t\tvar playerID = item[0]\n\t\t\tvar times = item[1]\n\t\t\treturn [\n\t\t\t\t'You played with ' + playerID + ' for ' + times + ' times',\n\t\t\t\t'您与 ' + playerID + ' 进行了 ' + times + ' 场游戏'\n\t\t\t]\n\t\t}\n\t],\n}\n\nvar events = {\n    'ZergKiller': [\n\t\t['Zerg Killer', '虫群杀手'],\n\t\tfunction () {\n\t\t\tvar avgDamage = Math.round(dataPersonal.PlayerBase.DamageDoneToZerg.sum / dataPersonal.PlayerBase.maps_total.sum[12])\n\t\t\tvar limit = avgDamage > 5000\n\t\t\treturn limit ?\n\t\t\t\t[\n\t\t\t\t\t'You made ' + avgDamage + ' zerg damage on average in Braxis Holdout',\n\t\t\t\t\t'平均每场布莱克西斯禁区中，你对虫群造成 ' + avgDamage + ' 点伤害'\n\t\t\t\t] : false\n\t\t}\n\t],\n    'WinRate': [\n\t\t['Amazing win rate', '令人惊讶的胜率'],\n\t\tfunction () {\n\t\t\tvar myWinRate = (dataPersonal.PlayerBase.game_win.sum / dataPersonal.PlayerBase.game_total.sum * 100).toFixed(2)\n\t\t\tvar globalWinRate = (dataGlobal.PlayerBase.game_win.sum / dataGlobal.PlayerBase.game_total.sum * 100).toFixed(2)\n\t\t\tvar limit = myWinRate > 1.2 * globalWinRate\n\t\t\treturn limit ?\n\t\t\t\t[\n\t\t\t\t\t'Your win rate(' + myWinRate + '%) is far higher than the global average(' + globalWinRate + '%)',\n\t\t\t\t\t'你的胜率(' + myWinRate + '%)远远高于全球平均水平(' + globalWinRate + '%)'\n\t\t\t\t] : false\n\t\t}\n\t],\n}\n\n// Todo: 排行榜，等待接口支持\nvar ranking = {}",
+			"file": "/G/BphotsWeekReport/present.js",
+			"file_size": 2841,
+			"file_write_time": 131747368596091601,
+			"settings":
+			{
+				"buffer_size": 2845,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 157.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/G/BphotsWeekReport/present.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2845,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1875,
+								1875
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1134.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "manage.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

@@ -1,0 +1,217 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>课题审核</title>
+    <style>
+    .task_info{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .task_info_title_1{
+        width: 90%;
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+        margin: 0 auto;
+    }
+    .task_info_title{
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+    }
+    .add_task_member{
+            width: 90%;
+            margin: 0 auto;
+        }
+    .content_font{
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .hide{
+        display: none;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    table{
+        table-layout:fixed;
+        empty-cells:show;
+        border-collapse: collapse;
+        margin:0 auto;
+        font-size: 16px;
+    }
+    td{
+        height:20px;
+        text-align: center;
+    }
+    table.t1{
+        border:1px solid #cad9ea;
+        color:#666;
+    }
+    table.t1 th {
+        height:30px;
+    }
+    table.t1 td,table.t1 th{
+        border:1px solid #cad9ea;
+        padding:0 1em 0;
+    }
+    table.t1 tr.a1{
+        background-color:#f5fafe;
+    }
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/keyan/">课题信息</a></li>
+                {% if user_identity == 0 %}
+                    <li><a href="/keyan_ratify/">课题审核</a></li>
+                {% endif %}
+                {% if user_identity == 1 %}
+                    <li><a href="/keyan_add_task/">课题添加</a></li>
+                {% endif %}
+                 <li><a href="/keyan_participate">我的项目</a></li>
+                <li><a href="/keyan_except/">预期成果</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+        <div class="task_info_title_1">【所有项目】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">项目编号</th>
+        <th width="40%">项目名称</th>
+        <th width="15%">项目负责人</th>
+        <th width="15%">项目类别</th>
+        <th width="15%">项目级别</th>
+        </thead>
+        {% for i in info_list %}
+            <tr class="a1">
+                <td>{{ i.task_id }}</td>
+                <td class="task_name">{{ i.task_name }}</td>
+                <td>{{ i.principle_id }}</td>
+                <td>{{ i.task_category }}</td>
+                <td>{{ i.task_rank }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+    $(document).ready(function () {
+        $("#b>a").css("color","#FFFFFF");
+        cur_li=document.getElementById('b');
+        cur_li.style.backgroundColor="#3F3F3F";
+        cur_li.style.color="#FFFFFF";
+        $("tbody>tr:odd").css("background","white");
+        {% block keyan_ajax %}
+        $(".task_name").click(function() {
+        var task_id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/detail_info/",
+            data: {task_id: task_id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_1").html("<div class=\"task_info\">\n" +
+                    "    <div class=\"task_info_title\">【基本信息】</div>\n" +
+                    "    <div class=\"task_info_content\">\n" +
+                    "        <div><div>项目名称：</div><div id='task_name'></div></div>\n" +
+                    "        <div><div>项目编号：</div><div id='task_id'></div></div>\n" +
+                    "        <div><div>负责人：</div><div id='principle_id'></div></div>\n" +
+                    "        <div><div>项目分类：</div><div id='task_category'></div></div>\n" +
+                    "        <div><div>项目级别：</div><div id='task_rank'></div></div>\n" +
+                    "    </div>\n" +
+                    "    <div class=\"task_info_title\">【项目成员信息】</div>\n" +
+                    "</div>\n" +
+                    "<table width=\"90%\" id=\"mytab\"  border=\"1\" class=\"t1\">\n" +
+                    "    <thead>\n" +
+                    "    <th width=\"20%\">署名顺序</th>\n" +
+                    "    <th width=\"20%\">成员姓名</th>\n" +
+                    "    <th width=\"20%\">成员性别</th>\n" +
+                    "    <th width=\"20%\">职称</th>\n" +
+                    "    <th width=\"20%\">学历</th>\n" +
+                    "    </thead>\n" +
+                    "</table>" +
+                    "</div>");
+                if (info[2] == 2){
+                    $(".add_task_member").addClass("hide");
+                }
+                var div_obj = $(".task_info_content").children();
+                console.log(div_obj);
+                for (var i = 0; i < div_obj.length; i++) {
+                    div_obj.eq(i).addClass("clearfix");
+                    div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+                    div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+                }
+                $("#task_name").text(info[0]["task_name"]);
+                $("#task_id").text(info[0]["task_id"]);
+                $("#principle_id").text(info[0]["principle_id"]);
+                $("#task_category").text(info[0]["task_category"]);
+                $("#task_rank").text(info[0]["task_rank"]);
+                for (var i = 0; i < info[1].length; i++) {
+                    $(".t1").append("<tr class=\"a1\" id=\"b" + i + "\">\n" +
+                        "        <td>" + info[1][i]["order"] + "</td>\n" +
+                        "        <td>" + info[1][i]["username"] + "</td>\n" +
+                        "        <td>" + info[1][i]["sex"] + "</td>\n" +
+                        "        <td>" + info[1][i]["userTechPost"] + "</td>\n" +
+                        "        <td>" + info[1][i]["userEduBack"] + "</td>\n" +
+                        "    </tr>");
+                }
+                var div_obj = $(".task_info_content").children();
+                console.log(div_obj);
+                for (var i=0;i<div_obj.length;i++){
+                    div_obj.eq(i).addClass("clearfix");
+                    div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+                    div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+                }
+
+            }
+        });
+        });
+        {% endblock %}
+    })
+
+    </script>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends "keyan.html" %}
+{% block head %}
+    <title>
+        {% if user_identity == 0 %}
+            资产审批
+            {% else %}
+            我的申请
+        {% endif %}
+    </title>
+    <style>
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    .add_task{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add_task_div{
+        position: relative;
+    }
+    .content_font{
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .property_title{
+        width: 90%;
+        font-size: 16px;
+        margin: 0 auto;
+    }
+    .submit {
+        padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+        top: 130px;
+        right: 20px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 16px;
+}
+    </style>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+    <div class="property_title">【待审核课题】</div>
+    <table width="90%" id="mytab"  border="1" class="t1">
+    <thead>
+    <th width="15%">课题编号</th>
+    <th width="25%">课题名称</th>
+    <th width="15%">负责人</th>
+    <th width="15%">项目级别</th>
+    <th width="15%">项目级别</th>
+    <th width="15%">操作</th>
+    </thead>
+    {% for i in info_list_1 %}
+        <tr class="a1">
+            <td>{{ i.task_id }}</td>
+            <td>{{ i.task_name }}</td>
+            <td>{{ i.principle_id }}</td>
+            <td>{{ i.task_category }}</td>
+            <td>{{ i.task_rank }}</td>
+            <td>
+                <button class="accept">通过</button>
+                <button class="reject">驳回</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+    <div class="content_box_2">
+    <div class="property_title">【已驳回课题】</div>
+    <table width="90%" id="mytab"  border="1" class="t1">
+    <thead>
+    <th width="15%">课题编号</th>
+    <th width="25%">课题名称</th>
+    <th width="15%">负责人</th>
+    <th width="15%">项目级别</th>
+    <th width="15%">项目级别</th>
+    <th width="15%">操作</th>
+    </thead>
+    {% for i in info_list_2 %}
+        <tr class="a1">
+            <td>{{ i.task_id }}</td>
+            <td>{{ i.task_name }}</td>
+            <td>{{ i.principle_id }}</td>
+            <td>{{ i.task_category }}</td>
+            <td>{{ i.task_rank }}</td>
+            <td>
+                <button class="accept">通过</button>
+                <button class="reject">驳回</button>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $("#b").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#b>a").css("color","#FFFFFF");
+        var div_obj = $(".budget_out_div").children();
+        for (var i=0;i<div_obj.length-1;i++){
+            div_obj.eq(i).addClass("clearfix");
+            div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+            div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+        }
+        $(".accept").click(function () {
+            var id = $(this).parent().siblings().first().text();
+            console.log(id);
+            $(this).parent().text("审核通过");
+            $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+            $.ajax({
+                url: "/keyan_if_ratify_ajax/",
+                data: {task_id: id,if_ratify:1},
+                type: "POST",
+                success:function () {
+                    alert("课题审核通过");
+                }
+            });
+        });
+        $(".reject").click(function () {
+            var id = $(this).parent().siblings().first().text();
+            console.log(id);
+            $(this).parent().text("申请驳回");
+            $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+            $.ajax({
+                url: "/keyan_if_ratify_ajax/",
+                data: {task_id: id,if_ratify:2},
+                type: "POST",
+                success:function () {
+                    alert("课题申请驳回");
+                }
+            });
+        });
+    </script>
+{% endblock %}

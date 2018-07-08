@@ -1,0 +1,226 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>
+        {% if user_identity == 0 %}
+            资产审批
+            {% else %}
+            我的申请
+        {% endif %}
+    </title>
+    <style>
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    .add_task{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add_task_div{
+        position: relative;
+    }
+    .content_font{
+        height: 30px;
+        line-height: 30px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .property_title{
+        width: 90%;
+        font-size: 16px;
+        margin: 0 auto;
+    }
+    .submit {
+        padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+        top: 130px;
+        right: 20px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 16px;
+}
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+            {% if user_identity == 0 %}
+                <li><a href="/property/">资产审批</a></li>
+                <li><a href="/property_baofei/">资产报废</a></li>
+            {% endif %}
+            {% if user_identity != 0 %}
+                <li><a href="/property/">我的申请</a></li>
+                <li><a href="/pro_purchase/">资产申报</a></li>
+            {% endif %}
+                <li><a href="/property_all/">资产一览</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    {% if user_identity == 0 %}
+        <div class="content_box_1">
+        <div class="property_title">【待审核申请】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="10%">资产编号</th>
+        <th width="10%">资产名称</th>
+        <th width="10%">申请人</th>
+        <th width="10%">资产价格</th>
+        <th width="30%">详细信息</th>
+        <th width="20%">所属项目</th>
+        <th width="10%">操作</th>
+        </thead>
+        {% for i in info_list_1 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td>{{ i.property_name }}</td>
+                <td class="task_name">{{ i.proposer }}</td>
+                <td class="task_name">{{ i.price }}</td>
+                <td class="task_name">{{ i.detail_info }}</td>
+                <td>{{ i.task_name }}</td>
+                <td>
+                    <button class="accept">通过</button>
+                    <button class="reject">驳回</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+        <div class="content_box_2">
+        <div class="property_title">【已驳回申请】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="10%">申请编号</th>
+        <th width="10%">资产名称</th>
+        <th width="10%">申请人</th>
+        <th width="10%">资产价格</th>
+        <th width="30%">详细信息</th>
+        <th width="20%">所属项目</th>
+        <th width="10%">操作</th>
+        </thead>
+        {% for i in info_list_2 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td>{{ i.property_name }}</td>
+                <td class="task_name">{{ i.proposer }}</td>
+                <td class="task_name">{{ i.price }}</td>
+                <td class="task_name">{{ i.detail_info }}</td>
+                <td>{{ i.task_name }}</td>
+                <td>
+                    <button class="accept">通过</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+    {% endif %}
+    {% if user_identity != 0 %}
+        <div class="content_box_1">
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">申请编号</th>
+        <th width="20%">资产名称</th>
+        <th width="15%">审核状态</th>
+        <th width="50%">所属项目</th>
+        </thead>
+        {% for i in info_list %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td class="task_name">{{ i.name }}</td>
+                <td>
+                    {% if i.if_ratify == 0 %}
+                    待审核
+                    {% elif i.if_ratify == 1 %}
+                    申请批准
+                    {% else %}
+                    申请驳回
+                    {% endif %}
+                </td>
+                <td>{{ i.task_name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script>
+        $("#h").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#h>a").css("color","#FFFFFF");
+        var div_obj = $(".budget_out_div").children();
+    for (var i=0;i<div_obj.length-1;i++){
+        div_obj.eq(i).addClass("clearfix");
+        div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+        div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+    }
+    $(".accept").click(function () {
+        var id = $(this).parent().siblings().first().text();
+        console.log(id);
+        $(this).parent().text("审核通过");
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/if_ratify/",
+            data: {property_id: id,if_ratify:1},
+            type: "POST",
+            success:function () {
+                alert("资产审核通过");
+            }
+        });
+    });
+    $(".reject").click(function () {
+        var id = $(this).parent().siblings().first().text();
+        console.log(id);
+        $(this).parent().text("申请驳回");
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/if_ratify/",
+            data: {property_id: id,if_ratify:2},
+            type: "POST",
+            success:function () {
+                alert("资产申购驳回");
+            }
+        });
+    });
+    </script>
+{% endblock %}

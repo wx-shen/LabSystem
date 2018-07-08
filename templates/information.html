@@ -1,0 +1,96 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>信息</title>
+    <style>
+        .user_info{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .user_info_title{
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add_group_member{
+        width: 90%;
+        margin: 0 auto;
+        font-size: 16px;
+    }
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/information/">用户信息一览</a></li>
+                {% if user_identity != 0 %}
+                   <li><a href="/info_team/">小组成员一览</a></li>
+                {% endif %}
+                {% if user_identity == 0 %}
+                    <li><a href="/info_add_user/">添加新用户</a></li>
+                {% endif %}
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+    <div class="user_info_title">
+        【所有成员一览】
+    </div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="10%">用户id</th>
+        <th width="20%">姓名</th>
+        <th width="15%">性别</th>
+        <th width="25%">职称</th>
+        <th width="15%">学历</th>
+        <th width="15%">权限</th>
+        </thead>
+        {% for i in user_info_list %}
+            <tr class="a1">
+                <td>{{ i.userId }}</td>
+                <td class="task_name">{{ i.userName }}</td>
+                <td>{{ i.userSex }}</td>
+                <td>{{ i.userTechPost }}</td>
+                <td>{{ i.userEduBack }}</td>
+                {% if i.userIdentity == 0 %}
+                <td>管理员</td>
+                {% elif i.userIdentity == 1 %}
+                <td>教师</td>
+                {% elif i.userIdentity == 2 %}
+                <td>学生</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{#    {% if user_identity == 1 %}#}
+{#        <div class="user_info_title">【添加新的小组成员】</div>#}
+{#        <form action="/add_group_member/" method="post" class="add_group_member">#}
+{#            用户id：<input type="text" name="add_group_member">#}
+{#            <input type="submit" value="提交">#}
+{#            {% csrf_token %}#}
+{#        </form>#}
+{#    {% endif %}#}
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $("#f").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#f>a").css("color","#FFFFFF");
+        $(".a1:odd").css("background","#f5fafe");
+        {#$(".a1:odd").css("color","red");#}
+    </script>
+{% endblock %}

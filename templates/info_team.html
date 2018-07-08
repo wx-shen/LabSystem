@@ -1,0 +1,77 @@
+{% extends "information.html" %}
+{% block content_box %}
+ <div class="content_box_1">
+    <div class="user_info_title">
+        【小组成员一览】
+    </div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="10%">用户id</th>
+        <th width="20%">姓名</th>
+        <th width="15%">性别</th>
+        <th width="25%">职称</th>
+        <th width="15%">学历</th>
+        <th width="15%">权限</th>
+        </thead>
+        {% for i in user_info_list %}
+            <tr class="a1">
+                <td>{{ i.userId }}</td>
+                <td class="task_name">{{ i.userName }}</td>
+                <td>{{ i.userSex }}</td>
+                <td>{{ i.userTechPost }}</td>
+                <td>{{ i.userEduBack }}</td>
+                {% if i.userIdentity == 0 %}
+                <td>管理员</td>
+                {% elif i.userIdentity == 1 %}
+                <td>教师</td>
+                {% elif i.userIdentity == 2 %}
+                <td>学生</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+    {% if user_identity == 1 %}
+        <div class="user_info_title">【添加新的小组成员】</div>
+        <form action="/add_group_member/" method="post" class="add_group_member clearfix">
+            用户id：<input type="text" name="add_group_member" id="add_group_member">
+            <div id="check_id_info" class="hide"></div>
+            <input type="submit" value="提交">
+            {% csrf_token %}
+        </form>
+    {% endif %}
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $("#f").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#f>a").css("color","#FFFFFF");
+        $(".a1:odd").css("background","#f5fafe");
+        {#$(".a1:odd").css("color","red");#}
+        $("#add_group_member").focusout(function () {
+            var user_id = $("#add_group_member").val();
+            if (user_id != ""){
+                console.log(user_id);
+                $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+                $.ajax({
+                url: "/check_id/",
+                data: {user_id: user_id},
+                type: "POST",
+                success: function (data) {
+                    info=JSON.parse(data);
+                    console.log(typeof info[0]);
+                    if(info[0]=="0"){
+                        $("#check_id_info").removeClass("hide").text("姓名："+info[1])
+                            .css("display","inline-block").css("color","#666");
+                    }
+                    else if (info[0]=="1"){
+                        $("#check_id_info").removeClass("hide").text("查无此人！")
+                            .css("color","red").css("display","inline-block");
+                    }
+
+                }})
+            }
+
+
+        });
+    </script>
+{% endblock %}

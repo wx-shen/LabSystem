@@ -1,0 +1,32 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>欢迎进入实验室管理系统</title>
+    <style>
+    #submit{
+        width: 100%;
+         padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 auto;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 16px;
+    }
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+        <div class="login_header">登录</div>
+        <form action="/index/" class="login_form" method="post">
+            <p><input type="text" placeholder="username" id="username" name="username"></p>
+            <p><input type="password" id="password" name="passwd"></p>
+            <div style="margin: 0 auto;width: 30%"><input type="submit" value="登录" id="submit"></div>
+            {% csrf_token %}
+        </form>
+    </div>
+{% endblock %}

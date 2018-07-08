@@ -1,0 +1,95 @@
+{% extends "keyan.html" %}
+{% block head %}
+    <title>课题发布</title>
+    <style>
+        .login_text ul li{
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        .add_task{
+
+        }
+        .add_task input{
+            display: block;
+        }
+    .add_task{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add_task_div{
+        position: relative;
+    }
+    .content_font{
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .submit {
+        padding: 0 10px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+        top: 120px;
+        right: 20px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 16px;
+}
+    </style>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+    <form action="/keyan_add_task/" method="post" class="add_task">
+        <div class="add_task_div">
+            <div><div>项目名称：</div><input type="text" name="task_name"></div>
+            <div><div>主要负责人：</div><input type="text" name="principle_id"></div>
+            <div><div>项目分类：</div><input type="text" name="task_category"></div>
+            <div><div>项目级别：</div><input type="text" name="task_rank"></div>
+            <div><div>经费：</div><input type="text" name="budget_total"></div>
+            <input type="submit" value="提交" class="submit">
+            {% csrf_token %}
+        </div>
+    </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+    $("#b").css("background","#3F3F3F").css("color","#FFFFFF");
+    $("#b>a").css("color","#FFFFFF");
+    var div_obj = $(".add_task_div").children();
+    console.log(div_obj);
+    for (var i=0;i<div_obj.length-1;i++){
+        div_obj.eq(i).addClass("clearfix");
+        div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+        div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+    }
+    </script>
+{% endblock %}

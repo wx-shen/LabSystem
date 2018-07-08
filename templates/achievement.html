@@ -1,0 +1,366 @@
+{% extends "index2.html" %}
+{% block head%}
+    <title>成果</title>
+    <style>
+        .task_info{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .task_info_title{
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+    }
+    .achievement_title{
+        width: 90%;
+        font-size: 16px;
+        margin: 0 auto;
+    }
+    .add_task_member{
+            width: 90%;
+            margin: 0 auto;
+        }
+    .content_font{
+        height: 20px;
+        line-height: 20px;
+        font-size: 14px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .hide{
+        display: none;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    table{
+        table-layout:fixed;
+        empty-cells:show;
+        border-collapse: collapse;
+        margin:0 auto;
+        font-size: 14px;
+    }
+    td{
+        height:20px;
+        text-align: center;
+    }
+    table.t1{
+        border:1px solid #cad9ea;
+        color:#666;
+    }
+    table.t1 th {
+        height:30px;
+    }
+    table.t1 td,table.t1 th{
+        border:1px solid #cad9ea;
+        padding:0 1em 0;
+    }
+    table.t1 tr.a1{
+        background-color:#f5fafe;
+    }
+    </style>
+{% endblock %}
+{% block side_box%}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/achievement/">成果一览</a></li>
+                <li><a href="/add_achievement/">添加新的成果</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+        <div class="achievement_title">【期刊论文】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">论文编号</th>
+        <th width="15%">论文标题</th>
+        <th width="15%">作者</th>
+        <th width="15%">期刊名称</th>
+        <th width="15%">发表时间</th>
+        <th width="25%">所属项目</th>
+        </thead>
+        {% for i in info_list_1 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td class="journal_article_name">{{ i.title }}</td>
+                <td>{{ i.author_id }}</td>
+                <td>{{ i.journal_name }}</td>
+                <td>{{ i.publish_time }}</td>
+                <td>{{ i.task_id }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        <div class="achievement_title">【专利】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">专利编号</th>
+        <th width="15%">专利名称</th>
+        <th width="15%">专利申请者</th>
+        <th width="15%">专利类别</th>
+        <th width="15%">专利国家</th>
+        <th width="25%">所属项目</th>
+        </thead>
+        {% for i in info_list_2 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td class="patent_name">{{ i.patent_name }}</td>
+                <td>{{ i.author_id }}</td>
+                <td>{{ i.category }}</td>
+                <td>{{ i.country }}</td>
+                <td>{{ i.task_id }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        <div class="achievement_title">【会议论文】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">论文编号</th>
+        <th width="15%">论文标题</th>
+        <th width="15%">论文作者</th>
+        <th width="15%">论文类别</th>
+        <th width="15%">会议名称</th>
+        <th width="25%">所属项目</th>
+        </thead>
+        {% for i in info_list_3 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td class="conference_article_name">{{ i.article_title }}</td>
+                <td>{{ i.author_id }}</td>
+                <td>{{ i.category }}</td>
+                <td>{{ i.confer_name }}</td>
+                <td>{{ i.task_id }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        <div class="achievement_title">【学术专著】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">专著编号</th>
+        <th width="15%">专著标题</th>
+        <th width="15%">专著作者</th>
+        <th width="15%">编辑</th>
+        <th width="15%">国家或地区</th>
+        <th width="25%">所属项目</th>
+        </thead>
+        {% for i in info_list_4 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td class="academic_monograph_name">{{ i.title }}</td>
+                <td>{{ i.author_id }}</td>
+                <td>{{ i.editor }}</td>
+                <td>{{ i.area }}</td>
+                <td>{{ i.task_id }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        <div class="achievement_title">【软件专利】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">软件专利编号</th>
+        <th width="15%">软件名称</th>
+        <th width="15%">作者</th>
+        <th width="15%">登记号</th>
+        <th width="15%">开发完成时间</th>
+        <th width="25%">所属项目</th>
+        </thead>
+        {% for i in info_list_5 %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td class="software_patent_name">{{ i.name }}</td>
+                <td>{{ i.author_id }}</td>
+                <td>{{ i.register_num }}</td>
+                <td>{{ i.finish_time }}</td>
+                <td>{{ i.task_id }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+{% block script%}
+    <script>
+    $("#c").css("background","#3F3F3F").css("color","#FFFFFF");
+    $("#c>a").css("color","#FFFFFF");
+    $(".a1:odd").css("background","#f5fafe");
+    $(".journal_article_name").click(function () {
+        var id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/journal_article_ajax/",
+            data: {id: id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_1").html("<div class=\"task_info\">\n" +
+                    "        <div class=\"task_info_title\">【期刊论文详情】</div>\n" +
+                    "        <div class=\"task_info_content\">\n" +
+                    "            <div><div>论文标题：</div><div>"+info["title"]+"</div></div>\n" +
+                    "            <div><div>作者姓名：</div><div>"+info["author_id"]+"</div></div>\n" +
+                    "            <div><div>期刊名称：</div><div>"+info["journal_name"]+"</div></div>\n" +
+                    "            <div><div>发表时间：</div><div>"+info["publish_time"]+"</div></div>\n" +
+                    "            <div><div>卷/期号：</div><div>"+info["roll_num"]+"</div></div>\n" +
+                    "            <div><div>起止页码：</div><div>"+info["start_end_page"]+"</div></div>\n" +
+                    "            <div><div>所属项目：</div><div>"+info["task_id"]+"</div></div>\n" +
+                    "        </div>\n" +
+                    "        </div>");
+                re_render();
+            }
+        });
+    });
+    $(".patent_name").click(function () {
+        var id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/patent_ajax/",
+            data: {id: id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_1").html("<div class=\"task_info\">\n" +
+                    "        <div class=\"task_info_title\">【专利详情】</div>\n" +
+                    "        <div class=\"task_info_content\">\n" +
+                    "            <div><div>专利名称：</div><div>"+info["patent_name"]+"</div></div>\n" +
+                    "            <div><div>专利国家：</div><div>"+info["country"]+"</div></div>\n" +
+                    "            <div><div>专利申请人：</div><div>"+info["author_id"]+"</div></div>\n" +
+                    "            <div><div>申请（专利）号：</div><div>"+info["patent_num"]+"</div></div>\n" +
+                    "            <div><div>发证单位：</div><div>"+info["institution"]+"</div></div>\n" +
+                    "            <div><div>专利类别：</div><div>"+info["category"]+"</div></div>\n" +
+                    "            <div><div>申请状态：</div><div>"+info["status"]+"</div></div>\n" +
+                    "            <div><div>申请时间：</div><div>"+info["apply_for_time"]+"</div></div>\n" +
+                    "            <div><div>生效时间：</div><div>"+info["take_effect_time"]+"</div></div>\n" +
+                    "            <div><div>所属项目：</div><div>"+info["task_id"]+"</div></div>\n" +
+                    "        </div>\n" +
+                    "        </div>");
+                re_render();
+            }
+        });
+    });
+    $(".conference_article_name").click(function () {
+        var id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/conference_article_ajax/",
+            data: {id: id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_1").html("<div class=\"task_info\">\n" +
+                    "        <div class=\"task_info_title\">【专利详情】</div>\n" +
+                    "        <div class=\"task_info_content\">\n" +
+                    "            <div><div>论文标题：</div><div>"+info["article_title"]+"</div></div>\n" +
+                    "            <div><div>作者姓名：</div><div>"+info["author_id"]+"</div></div>\n" +
+                    "            <div><div>论文类别：</div><div>"+info["category"]+"</div></div>\n" +
+                    "            <div><div>会议名称：</div><div>"+info["confer_name"]+"</div></div>\n" +
+                    "            <div><div>会议时间：</div><div>"+info["confer_time"]+"</div></div>\n" +
+                    "            <div><div>发表日期：</div><div>"+info["publish_time"]+"</div></div>\n" +
+                    "            <div><div>国家或地区：</div><div>"+info["area"]+"</div></div>\n" +
+                    "            <div><div>所属项目：</div><div>"+info["task_id"]+"</div></div>\n" +
+                    "        </div>\n" +
+                    "        </div>");
+                re_render();
+            }
+        });
+    });
+    $(".academic_monograph_name").click(function () {
+        var id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/academic_monograph_ajax/",
+            data: {id: id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_1").html("<div class=\"task_info\">\n" +
+                    "        <div class=\"task_info_title\">【学术专著详情】</div>\n" +
+                    "        <div class=\"task_info_content\">\n" +
+                    "            <div><div>专著标题：</div><div>"+info["title"]+"</div></div>\n" +
+                    "            <div><div>作者姓名：</div><div>"+info["author_id"]+"</div></div>\n" +
+                    "            <div><div>编辑：</div><div>"+info["editor"]+"</div></div>\n" +
+                    "            <div><div>国家或地区：</div><div>"+info["area"]+"</div></div>\n" +
+                    "            <div><div>出版日期：</div><div>"+info["publish_time"]+"</div></div>\n" +
+                    "            <div><div>出版社：</div><div>"+info["publisher"]+"</div></div>\n" +
+                    "            <div><div>所属项目：</div><div>"+info["task_id"]+"</div></div>\n" +
+                    "        </div>\n" +
+                    "        </div>");
+                re_render();
+            }
+        });
+    });
+    $(".software_patent_name").click(function () {
+        var id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/software_patent_ajax/",
+            data: {id: id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                $(".content_box_1").html("<div class=\"task_info\">\n" +
+                    "        <div class=\"task_info_title\">【学术专著详情】</div>\n" +
+                    "        <div class=\"task_info_content\">\n" +
+                    "            <div><div>软件名称：</div><div>"+info["name"]+"</div></div>\n" +
+                    "            <div><div>作者姓名：</div><div>"+info["author_id"]+"</div></div>\n" +
+                    "            <div><div>登记号：</div><div>"+info["register_num"]+"</div></div>\n" +
+                    "            <div><div>权利获得方式：</div><div>"+info["method"]+"</div></div>\n" +
+                    "            <div><div>开发完成时间：</div><div>"+info["finish_time"]+"</div></div>\n" +
+                    "            <div><div>所属项目：</div><div>"+info["task_id"]+"</div></div>\n" +
+                    "        </div>\n" +
+                    "        </div>");
+                re_render();
+            }
+        });
+    });
+    function re_render() {
+        var div_obj = $(".task_info_content").children();
+        for (var i=0;i<div_obj.length;i++){
+            div_obj.eq(i).addClass("clearfix");
+            div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+            div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+        }
+    }
+    </script>
+{% endblock %}

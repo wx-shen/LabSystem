@@ -1,0 +1,452 @@
+{% extends "keyan.html" %}
+{% block head %}
+    <title>我的项目</title>
+    <style>
+    .task_info{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .task_info_title_1{
+        width: 90%;
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+        margin: 0 auto;
+    }
+    .task_info_title{
+        font-size: 16px;
+        line-height: 20px;
+        height: 20px;
+    }
+    .add_task_member{
+            width: 90%;
+            margin: 0 auto;
+        }
+    .content_font{
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .order_user_id{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        border: 0 ;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .hide{
+        display: none;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .login_text ul li{
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+    table{
+        table-layout:fixed;
+        empty-cells:show;
+        border-collapse: collapse;
+        margin:0 auto;
+        font-size: 16px;
+    }
+    td{
+        height:20px;
+        text-align: center;
+    }
+    table.t1{
+        border:1px solid #cad9ea;
+        color:#666;
+    }
+    table.t1 th {
+        height:30px;
+    }
+    table.t1 td,table.t1 th{
+        border:1px solid #cad9ea;
+        padding:0 1em 0;
+    }
+    table.t1 tr.a1{
+        background-color:#f5fafe;
+    }
+    td{
+        position: relative;
+    }
+    .submit {
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        right: 40px;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+    .option_button {
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        cursor: pointer;
+        color: #888;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+        display: inline-block;
+        font-size: 14px;
+    }
+    </style>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+        {% if info_list_1.0 == "empty" %}
+            <div class="task_info_title_1">【暂无管理的项目】</div>
+        {% else %}
+            <div class="task_info_title_1">【管理的项目】</div>
+            <table width="90%" id="mytab"  border="1" class="t1">
+            <thead>
+            <th width="15%">项目编号</th>
+            <th width="40%">项目名称</th>
+            <th width="15%">项目负责人</th>
+            <th width="15%">项目类别</th>
+            <th width="15%">项目级别</th>
+            </thead>
+            {% for i in info_list_1 %}
+                <tr class="a1">
+                    <td>{{ i.task_id }}</td>
+                    <td class="task_name">{{ i.task_name }}</td>
+                    <td>{{ i.principle_id }}</td>
+                    <td>{{ i.task_category }}</td>
+                    <td>{{ i.task_rank }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+    <div class="content_box_2">
+    {% if info_list_1.0 == "empty" %}
+    <div class="task_info_title_1">【暂无参与的项目】</div>
+        {% else %}
+        <div class="task_info_title_1">【参与的项目】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">项目编号</th>
+        <th width="40%">项目名称</th>
+        <th width="15%">项目负责人</th>
+        <th width="15%">项目类别</th>
+        <th width="15%">项目级别</th>
+        </thead>
+        {% for i in info_list_2 %}
+            <tr class="a1">
+                <td>{{ i.task_id }}</td>
+                <td>{{ i.task_name }}</td>
+                <td>{{ i.principle_id }}</td>
+                <td>{{ i.task_category }}</td>
+                <td>{{ i.task_rank }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    </div>
+    <div class="content_box_3 hide">
+    <form action="/task_modify/" method="post">
+    <div class="task_info">
+        <div class="task_info_title">【修改项目信息】</div>
+
+            <div class="task_info_content">
+                <div><div>项目名称：</div><input type="text" id="task_name" name="task_name"></div>
+                <div><div>项目分类：</div><input type="text" id="task_category" name="task_category"></div>
+                <div><div>项目级别：</div><input type="text" id="task_rank" name="task_rank"></div>
+                <div><div>项目负责人（输入id）：</div><input type="text" id="principle_id" name="principle_id"></div>
+                <div><div>项目负责人姓名：</div><div id="principle_name"></div></div>
+            </div>
+
+        <div class="task_info_title">【项目组现有成员】</div>
+    </div>
+
+    <table width=90% id="mytab"  border=1 class="t1">
+        <thead>
+        <th width=15%>署名顺序</th>
+        <th width=10%>成员id</th>
+        <th width=15%>成员姓名</th>
+        <th width=10%>性别</th>
+        <th width=10%>职称</th>
+        <th width=10%>学历</th>
+        <th width=30%>option</th>
+        </thead>
+    </table>
+        <div id="add_member" class="option_button">添加新成员</div>
+        </form>
+    </div>
+
+{% endblock %}
+{% block script %}
+    <script>
+        $("#b>a").css("color","#FFFFFF");
+        cur_li=document.getElementById('b');
+        cur_li.style.backgroundColor="#3F3F3F";
+        cur_li.style.color="#FFFFFF";
+        $("tbody>tr:odd").css("background","white");
+        //存放项目成员id的数组
+        var member_list=[];
+        //点击项目名称后，进入详细信息页面
+        $(".task_name").click(function() {
+        var task_id = $(this).parent().children().eq(0).text();
+        alert("123");
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/modify_ajax/",
+            data: {task_id: task_id},
+            type: "POST",
+            success: function (data) {
+                info = JSON.parse(data);
+                console.log(info);
+                $("#task_name").attr("value",info[0]["task_name"]);
+                $("#task_category").attr("value",info[0]["task_category"]);
+                $("#task_rank").attr("value",info[0]["task_rank"]);
+                $("#principle_id").attr("value",info[0]["principle_id"]);
+                console.log(info[0]["principle_name"]);
+                $("#principle_name").html(info[0]["principle_name"]);
+                $(".content_box_1").html("");
+                $(".content_box_2").html("");
+                $(".content_box_3").removeClass("hide");
+                $(".a1").remove();
+                if (info[1].length==1){
+                    console.log(info[1][0]);
+                    $(".t1").append("<tr class=\"a1 b2\" id=\"b" + i + "\">\n" +
+                        "        <td>" + info[1][0]["order"] + "</td>\n" +
+                        "        <td><input class='order_user_id new_line' type=\"text\" value=\""+ info[1][0]["user_id"]+"\"></td>\n" +
+                        "        <td>" + info[1][0]["username"] + "</td>\n" +
+                        "        <td>" + info[1][0]["sex"] + "</td>\n" +
+                        "        <td>" + info[1][0]["userTechPost"] + "</td>\n" +
+                        "        <td>" + info[1][0]["userEduBack"] + "</td>\n" +
+                        "        <td>button</td>\n" +
+                        "    </tr>");
+                }
+                else {
+                    for (var i = 0; i < info[1].length; i++) {
+                    $(".t1").append("<tr class=\"a1 b2\" id=\"b" + i + "\">\n" +
+                        "        <td>" + info[1][i]["order"] + "</td>\n" +
+                        "        <td><input class='order_user_id' type=\"text\" value=\""+ info[1][i]["user_id"]+"\"></td>\n" +
+                        "        <td>" + info[1][i]["username"] + "</td>\n" +
+                        "        <td>" + info[1][i]["sex"] + "</td>\n" +
+                        "        <td>" + info[1][i]["userTechPost"] + "</td>\n" +
+                        "        <td>" + info[1][i]["userEduBack"] + "</td>\n" +
+                        "        <td><div class=\"delete\" flag=\"not_del\">删除</div></td>\n" +
+                        "    </tr>");
+                    }
+                }
+
+                $("form").append("<input type=\"submit\" value=\"提交\" class=\"submit\">" +
+                    "{% csrf_token %}");
+                var div_obj = $(".task_info_content").children();
+                console.log(div_obj);
+                for (var i=0;i<div_obj.length;i++){
+                    div_obj.eq(i).addClass("clearfix");
+                    div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+                    div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+                }
+                re_render();
+                $("#principle_id").attr("onchange","check_principle_id(this)");
+            }
+        });
+        });
+        //失去项目负责人id的焦点后，检查该id是否存在
+        function check_principle_id(self) {
+            var principle_id = $(self).val();
+            console.log(principle_id);
+            $.ajax({
+                url: "/check_id/",
+                data: {user_id: principle_id},
+                type: "POST",
+                success: function (data) {
+                    info=JSON.parse(data);
+                    console.log(typeof info[0]);
+                    if(info[0]=="0"){
+                        $("#principle_name").text(info[1]).css("color","#666");
+                    }
+                    else if (info[0]=="1"){
+                        $("#principle_name").text("查无此人！").css("color","red");
+                    }
+
+                }});
+        };
+        //调整署名顺序
+        function re_render() {
+            var obj=$(".b2");
+            console.log(obj.length);
+            member_list=[];
+            var member_obj=$(".order_user_id");
+            for(var i=0;i<member_obj.length;i++){
+                member_list.push(member_obj.eq(i).val());
+            }
+            console.log("member_list:"+member_list);
+            if (obj.length==1){
+                for (var i=0;i<obj.length;i++){
+                    obj.eq(i).children().first().text(i+1);
+                    obj.eq(i).children().eq(1).children().eq(0).attr("name",i+1);
+                    obj.eq(i).children().last().html("无法删除！");
+                }
+            }
+            else{
+                for (var i=0;i<obj.length;i++){
+                    if (i==0){
+                        obj.eq(i).children().last().html("<div class=\"option_button\">-</div><div class=\"option_button del_member\">删除</div>");
+                        obj.eq(i).children().last().children().first().attr("onclick","down(this)");
+                        obj.eq(i).children().last().children().last().attr("onclick","del(this)");
+                    }
+                    else if (i==obj.length-1){
+                        obj.eq(i).children().last().html("<div class=\"option_button\">+</div><div class=\"option_button del_member\">删除</div>");
+                        obj.eq(i).children().last().children().first().attr("onclick","up(this)");
+                        obj.eq(i).children().last().children().last().attr("onclick","del(this)");
+                    }
+                    else {
+                        obj.eq(i).children().last().html("<div class=\"option_button\">+</div><div class=\"option_button\">-</div><div class=\"option_button del_member\">删除</div>");
+                        obj.eq(i).children().last().children().first().attr("onclick","up(this)");
+                        obj.eq(i).children().last().children().eq(1).attr("onclick","down(this)");
+                        obj.eq(i).children().last().children().last().attr("onclick","del(this)");
+                    }
+                    obj.eq(i).children().first().text(i+1);
+                    obj.eq(i).children().eq(1).children().eq(0).attr("name",i+1);
+                }
+            }
+            $(".order_user_id").attr("onchange","check_new_id(this)");
+        }
+        function check_new_id(self) {
+            $(self).addClass("this_id");
+            var user_id=$(self).val().trim();
+            var flag="true";
+            for (var i=0;i<member_list.length;i++){
+                if (member_list[i]==user_id){
+                    alert("重复的id");
+                    var next_td=$(".this_id").parent().nextAll();
+                    next_td.eq(0).text("");
+                    next_td.eq(1).text("");
+                    next_td.eq(2).text("");
+                    next_td.eq(3).text("");
+                    $(".this_id").val("").removeClass("this_id");
+                    flag="false";
+                    break;
+                }
+            }
+            console.log(user_id);
+            if (flag=="true"){
+                $.ajax({
+                url: "/check_new_id/",
+                data: {user_id: user_id},
+                type: "POST",
+                success: function (data) {
+                    info=JSON.parse(data);
+                    console.log(info);
+                    console.log($(self));
+                    if(info[0]=="0"){
+                        alert("123");
+                        var next_td=$(".this_id").parent().nextAll();
+                        next_td.eq(0).text(info[1]["user_name"]).css("color","#666");
+                        next_td.eq(1).text(info[1]["user_sex"]);
+                        next_td.eq(2).text(info[1]["user_tech_post"]);
+                        next_td.eq(3).text(info[1]["user_edu_back"]);
+                        $(".this_id").removeClass("this_id");
+                    }
+                    else if (info[0]=="1"){
+                        alert("456");
+                        var next_td=$(".this_id").parent().nextAll();
+                        next_td.eq(0).text("查无此人！").css("color","red");
+                        next_td.eq(1).text("");
+                        next_td.eq(2).text("");
+                        next_td.eq(3).text("");
+                        $(".this_id").val("").removeClass("this_id");
+                    }
+                    else if (info[0]=="2"){
+                        alert("id由数字组成！");
+                        var next_td=$(".this_id").parent().nextAll();
+                        next_td.eq(0).text("");
+                        next_td.eq(1).text("");
+                        next_td.eq(2).text("");
+                        next_td.eq(3).text("");
+                        $(".this_id").val("").removeClass("this_id");
+
+                    }
+
+                }});
+            }
+
+        }
+        $("#add_member").click(function () {
+            $("table").append("<tr class=\"a1 b2\">\n" +
+                "        <td>1</td>\n" +
+                "        <td><input class='order_user_id new_line' type=\"text\" value=\"\"></td>\n" +
+                "        <td></td>\n" +
+                "        <td></td>\n" +
+                "        <td></td>\n" +
+                "        <td></td>\n" +
+                "        <td></td>\n" +
+                "    </tr>");
+            re_render();
+        });
+        function del(self) {
+            $(self).parent().parent().remove();
+            re_render();
+        }
+        function up(self) {
+            var td_obj=$(self).parent().parent();
+            var td_prev=td_obj.prev();
+            for (var i=2;i<6;i++){
+                temp=td_obj.children().eq(i).text();
+                td_obj.children().eq(i).text(td_prev.children().eq(i).text());
+                td_prev.children().eq(i).text(temp);
+            }
+            var id_value=td_obj.children().eq(1).children().first().val();
+            var id_2=td_prev.children().eq(1).children().first().val();
+            console.log(id_value,id_2);
+            td_obj.children().eq(1).children().first().val(id_2);
+            td_prev.children().eq(1).children().first().val(id_value);
+            re_render();
+        }
+        function down(self) {
+            var td_obj=$(self).parent().parent();
+            var td_next=td_obj.next();
+            for (var i=2;i<6;i++){
+                temp=td_obj.children().eq(i).text();
+                td_obj.children().eq(i).text(td_next.children().eq(i).text());
+                td_next.children().eq(i).text(temp);
+            }
+            var id_value=td_obj.children().eq(1).children().first().val();
+            var id_2=td_next.children().eq(1).children().first().val();
+            td_obj.children().eq(1).children().first().val(id_2);
+            td_next.children().eq(1).children().first().val(id_value);
+            re_render();
+        }
+
+
+    </script>
+{% endblock %}

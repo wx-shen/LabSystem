@@ -1,0 +1,53 @@
+.page_header{
+    width: 100%;
+    height: 100px;
+    background: url("/statics/img/header.gif");
+    background-size: 100% 100px;
+    margin: 0 0 0 0;
+}
+
+.username{
+    position: absolute;
+    width: 500px;
+    height: 40px;
+    line-height: 40px;
+    color: white;
+    font-size: 30px;
+    left: 30px;
+    top: 50px;
+}
+.page_body{
+    margin: 20px 20px 20px 20px;
+    width: 95%;
+    height: 600px;
+    clear: none;
+}
+
+.page_body_menu{
+    width: 20%;
+    height: 100%;
+    float: left;
+    background: white;
+    border-radius: 10px;
+}
+
+.page_body_context{
+    width: 80%;
+    height: 600px;
+    position: relative;
+    left: 20px;
+    background: white;
+    float: left;
+    border-radius: 10px;
+    /*padding: 20px 20px 20px 20px;*/
+}
+
+
+
+.page_body_menu ul li{
+    height: 30px;
+    width: 100px;
+    margin: 20px auto;
+    list-style-type: none;
+}
+

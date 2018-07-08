@@ -1,0 +1,35 @@
+{% extends "property.html" %}
+{% block head %}
+    <title>资产一览</title>
+    <style>
+
+    </style>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="10%">资产编号</th>
+        <th width="10%">资产名称</th>
+        <th width="10%">资产价格（元）</th>
+        <th width="10%">申请人</th>
+        <th width="15%">购入时间</th>
+        <th width="15%">报废时间</th>
+        <th width="20%">所属项目</th>
+        <th width="10%">资产状态</th>
+        </thead>
+        {% for i in info_list %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td>{{ i.property_name }}</td>
+                <td>{{ i.price }}</td>
+                <td>{{ i.proposer }}</td>
+                <td>{{ i.purchase_time }}</td>
+                <td>{{ i.scrap_time }}</td>
+                <td>{{ i.task_name }}</td>
+                <td>{{ i.status }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+{% endblock %}

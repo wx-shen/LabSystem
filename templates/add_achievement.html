@@ -1,0 +1,241 @@
+{% extends "index2.html" %}
+{% block head%}
+    <title xmlns="http://www.w3.org/1999/html">添加成果</title>
+    <style>
+    #category{
+        padding: 0;
+        border: 0;
+    }
+    .login_text ul li{
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        .add_user{
+
+        }
+        .add_user input{
+            display: block;
+        }
+    .add_user{
+        width: 90%;
+        margin: 0 auto;
+    }
+    .add_user_div{
+        position: relative;
+    }
+    .content_font{
+        height: 20px;
+        line-height: 20px;
+        font-size: 16px;
+        border:1px solid #cad9ea;
+        padding-left: 10px;
+        color: #666;
+    }
+    .content_1{
+        width: 40%;
+        background-color:#f5fafe;;
+    }
+    .content_2{
+        width: 56%;
+    }
+    .float{
+        float: left;
+    }
+    .clearfix:after{
+        content:'ooo';
+        display:block;
+        clear:both;
+        visibility:hidden;
+        height:0;
+    }
+    .submit {
+        padding: 0 10px;
+        margin-top: 20px;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+        right: 20px;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    font-size: 16px;
+}
+    </style>
+{% endblock %}
+{% block side_box%}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/achievement/">成果一览</a></li>
+                <li><a href="/add_achievement/">添加新的成果</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+    <form action="/add_achievement/" method="post" class="add_achievement">
+        <div class="add_achievement_div">
+            <div><div>类别：</div>
+                <select name="add_category" id="category" onchange="change_input(this)">
+                    <option value="1">期刊论文</option>
+                    <option value="2">专利</option>
+                    <option value="3">会议论文</option>
+                    <option value="4">学术专著</option>
+                    <option value="5">软件专利</option>
+                </select></div>
+            <div><div>论文标题：</div><input type="text" name="title"></div>
+            <div><div>期刊名称：</div><input type="text" name="journal_name"></div>
+            <div><div>发表时间：</div><input type="text" name="publish_time"></div>
+            <div><div>卷/期号：</div><input type="text" name="roll_num"></div>
+            <div><div>起止页码：</div><input type="text" name="start_end_page"></div>
+            <div><div>所属项目：</div><input type="text" name="task_id"></div>
+            <input type="submit" value="提交" class="submit">
+            {% csrf_token %}
+        </div>
+    </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+    $("#c").css("background","#3F3F3F").css("color","#FFFFFF");
+    $("#c>a").css("color","#FFFFFF");
+    $(".a1:odd").css("background","#f5fafe");
+
+    function change_input(self) {
+        console.log();
+        var flag=$("#category option:selected").attr("value")
+        if (flag=="1"){
+            $("#category").parent().nextAll().remove();
+            $(".add_achievement_div").append(
+                "            <div><div>论文标题：</div><input type=\"text\" name=\"title\"></div>\n" +
+                "            <div><div>期刊名称：</div><input type=\"text\" name=\"journal_id\"></div>\n" +
+                "            <div><div>发表时间：</div><input type=\"text\" name=\"publish_time\"></div>\n" +
+                "            <div><div>卷/期号：</div><input type=\"text\" name=\"roll_num\"></div>\n" +
+                "            <div><div>起止页码：</div><input type=\"text\" name=\"start_end_page\"></div>\n" +
+                "            <div><div>所属项目：</div><input type=\"text\" name=\"task_id\"></div>" +
+                "<input type=\"submit\" value=\"提交\" class=\"submit\">\n" +
+                "            {% csrf_token %}");
+            re_render();
+        }
+        if (flag=="2"){
+            $("#category").parent().nextAll().remove();
+            $(".add_achievement_div").append(
+                "<div><div>专利名称：</div><input type=\"text\" name=\"patent_name\"></div>\n" +
+                "            <div>\n" +
+                "                <div>国家或地区：</div>\n" +
+                "                <div>\n" +
+                "                    <input type=\"radio\" name=\"country\" value=\"中国专利\">中国专利</input>\n" +
+                "                    <input type=\"radio\" name=\"country\" value=\"美国专利\">美国专利</input>\n" +
+                "                    <input type=\"radio\" name=\"country\" value=\"欧洲专利\">欧洲专利</input>\n" +
+                "                    <input type=\"radio\" name=\"country\" value=\"WIPO专利\">WIPO专利</input>\n" +
+                "                    <input type=\"radio\" name=\"country\" value=\"日本专利\">日本专利</input>\n" +
+                "                    <input type=\"radio\" name=\"country\" value=\"其他国家专利\">其他国家专利</input>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div><div>申请（专利）号：</div><input type=\"text\" name=\"patent_num\"></div>\n" +
+                "            <div><div>发证单位：</div><input type=\"text\" name=\"institution\"></div>\n" +
+                "            <div>\n" +
+                "                <div>专利类别：</div>\n" +
+                "                <div>\n" +
+                "                    <input type=\"radio\" name=\"category\" value=\"发明专利\">发明专利</input>\n" +
+                "                    <input type=\"radio\" name=\"category\" value=\"使用新型\">使用新型</input>\n" +
+                "                    <input type=\"radio\" name=\"category\" value=\"外观设计\">外观设计</input>\n" +
+                "                </div>\n" +
+                "\n" +
+                "            </div>\n" +
+                "            <div>\n" +
+                "                <div>专利状态：</div>\n" +
+                "                <div>\n" +
+                "                    <input type=\"radio\" name=\"status\" value=\"申请\">申请</input>\n" +
+                "                    <input type=\"radio\" name=\"status\" value=\"授权\">授权</input>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div><div>申请时间：</div><input type=\"text\" name=\"apply_for_time\"></div>\n" +
+                "            <div><div>生效时间：</div><input type=\"text\" name=\"take_effect_time\"></div>\n" +
+                "            <div><div>所属项目：</div><input type=\"text\" name=\"task_id\"></div>" +
+                "<input type=\"submit\" value=\"提交\" class=\"submit\">\n" +
+                "            {% csrf_token %}");
+            re_render();
+        }
+        if (flag=="3"){
+            $("#category").parent().nextAll().remove();
+            $(".add_achievement_div").append(
+                "<div><div>论文标题：</div><input type=\"text\" name=\"article_title\"></div>\n" +
+                "            <div>\n" +
+                "                <div>论文类别：</div>\n" +
+                "                <div>\n" +
+                "                    <input type=\"radio\" name=\"category\" value=\"特邀报告\">特邀报告</input>\n" +
+                "                    <input type=\"radio\" name=\"category\" value=\"分组报告\">分组报告</input>\n" +
+                "                    <input type=\"radio\" name=\"category\" value=\"墙报展示\">墙报展示</input>\n" +
+                "                </div>\n" +
+                "            </div>\n" +
+                "            <div><div>会议名称：</div><input type=\"text\" name=\"confer_name\"></div>\n" +
+                "            <div><div>会议时间：</div><input type=\"text\" name=\"confer_time\"></div>\n" +
+                "            <div><div>发表时间：</div><input type=\"text\" name=\"publish_time\"></div>\n" +
+                "            <div><div>国家或地区：</div><input type=\"text\" name=\"area\"></div>\n" +
+                "            <div><div>所属项目：</div><input type=\"text\" name=\"task_id\"></div>" +
+                "<input type=\"submit\" value=\"提交\" class=\"submit\">\n" +
+                "            {% csrf_token %}");
+            re_render();
+        }
+        if (flag=="4"){
+            $("#category").parent().nextAll().remove();
+            $(".add_achievement_div").append(
+                "<div><div>专著标题：</div><input type=\"text\" name=\"title\"></div>\n" +
+                "            <div><div>编辑：</div><input type=\"text\" name=\"editor\"></div>\n" +
+                "            <div><div>国家或地区：</div><input type=\"text\" name=\"area\"></div>\n" +
+                "            <div><div>出版时间：</div><input type=\"text\" name=\"publish_time\"></div>\n" +
+                "            <div><div>出版社：</div><input type=\"text\" name=\"publisher\"></div>\n" +
+                "            <div><div>所属项目：</div><input type=\"text\" name=\"task_id\"></div>" +
+                "<input type=\"submit\" value=\"提交\" class=\"submit\">\n" +
+                "            {% csrf_token %}");
+            re_render();
+        }
+        if (flag=="5"){
+            $("#category").parent().nextAll().remove();
+            $(".add_achievement_div").append(
+                "<div><div>软件名称：</div><input type=\"text\" name=\"name\"></div>\n" +
+                "            <div><div>登记号：</div><input type=\"text\" name=\"register_num\"></div>\n" +
+                "<div>\n" +
+                "                <div>权利获得方式：</div>\n" +
+                "                <div>\n" +
+                "                    <input type=\"radio\" name=\"method\" value=\"原始取得\">原始取得</input>\n" +
+                "                    <input type=\"radio\" name=\"method\" value=\"继受取得\">继受取得</input>\n" +
+                "                </div>\n" +
+                "            </div>" +
+                "            <div><div>软件完成时间：</div><input type=\"text\" name=\"finish_time\"></div>\n" +
+                "            <div><div>所属项目：</div><input type=\"text\" name=\"task_id\"></div>" +
+                "<input type=\"submit\" value=\"提交\" class=\"submit\">\n" +
+                "            {% csrf_token %}");
+            re_render();
+        }
+    }
+    re_render();
+    function re_render() {
+        var div_obj = $(".add_achievement_div").children();
+        for (var i=0;i<div_obj.length;i++){
+            div_obj.eq(i).addClass("clearfix");
+            div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+            div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+        }
+    }
+    </script>
+{% endblock %}

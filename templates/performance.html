@@ -1,0 +1,146 @@
+{% extends "index2.html" %}
+{% block head %}
+    <title>绩效</title>
+    <style>
+    .task_info_title_1{
+        width: 90%;
+        font-size: 16px;
+        margin: 0 auto;
+    }
+    .graph{
+        width: 90%;
+        height: 600px;
+        margin: 0 auto;
+        border: 1px dashed gainsboro;
+    }
+    .placeholder{
+        text-align: center;
+        line-height: 600px;
+        font-size: 30px;
+    }
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+                <div class="login_text">
+                    <ul>
+                        <li>
+                            {% if user_identity == 0 %}
+                                欢迎登录，管理员用户：{{ username }}
+                            {% elif user_identity == 1 %}
+                                欢迎登录，教师用户：{{ username }}
+                            {% elif user_identity == 2 %}
+                                欢迎登录，学生用户：{{ username }}
+                            {% endif %}
+                        </li>
+                        <li><a href="/performance/">绩效信息</a></li>
+                        <li><a href="/logout/">退出登录</a></li>
+                    </ul>
+                </div>
+            </div>
+{% endblock %}
+{% block content_box %}
+    <div class="content_box_1">
+        <div class="task_info_title_1">【所有项目】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">项目编号</th>
+        <th width="40%">项目名称</th>
+        <th width="15%">项目负责人</th>
+        <th width="15%">项目类别</th>
+        <th width="15%">项目级别</th>
+        </thead>
+        {% for i in info_list %}
+            <tr class="a1">
+                <td>{{ i.task_id }}</td>
+                <td class="task_name">{{ i.task_name }}</td>
+                <td>{{ i.principle_id }}</td>
+                <td>{{ i.task_category }}</td>
+                <td>{{ i.task_rank }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <div class="content_box_2 hide">
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="15%">项目编号</th>
+        <th width="40%">项目名称</th>
+        <th width="15%">项目负责人</th>
+        <th width="15%">项目类别</th>
+        <th width="15%">项目级别</th>
+        </thead>
+        <tr class="a1">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </table>
+        <div id="pie1" class="graph" ></div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script language="javascript" type="text/javascript" src="/statics/jQuery/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="/statics/jQuery/jquery.flot.pie.js"></script>
+    <script>
+        $("#e").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#e>a").css("color","#FFFFFF");
+        $(".task_name").click(function() {
+        var task_id = $(this).parent().children().eq(0).text();
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/performance_ajax/",
+            data: {task_id: task_id},
+            type: "POST",
+            success: function (data) {
+                alert("123");
+                info = JSON.parse(data);
+                console.log(info);
+                flag=false;
+                console.log(typeof info[1][0]);
+                for (var i=0;i<5;i++){
+                    if (info[1][i]!=0){
+                        flag=true
+                    }
+                }
+                console.log(flag);
+                $(".content_box_1").remove();
+                $(".content_box_2").removeClass("hide");
+                obj=$(".a1").children();
+                obj.eq(0).text(info[0]["task_id"]);
+                obj.eq(1).text(info[0]["task_name"]);
+                obj.eq(2).text(info[0]["principle_id"]);
+                obj.eq(3).text(info[0]["task_category"]);
+                obj.eq(4).text(info[0]["task_rank"]);
+                if (flag==true){
+                    var data = [
+                       { label: "期刊论文",  data: info[1][0]},
+                       { label: "专利",  data: info[1][1]},
+                       { label: "会议论文",  data: info[1][2]},
+                       { label: "学术专著",  data: info[1][3]},
+                       { label: "软件专利",  data: info[1][4]},
+                    ];
+                    $.plot($("#pie1"), data, {
+                        series: {
+                            pie: {
+                                show: true
+                            }
+                            },
+                        legend: {
+                            show: false //不显示图例
+                        }
+                    });
+                }
+                else if (flag==false){
+                    $("#pie1").addClass("placeholder").text("该项目暂无成果");
+                    console.log($("#pie1").text());
+                }
+
+            }
+        });});
+
+
+    </script>
+{% endblock %}

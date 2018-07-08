@@ -1,0 +1,114 @@
+{% extends "information.html" %}
+{% block head %}
+    <title>修改密码</title>
+    <style>
+        .login_text ul li{
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        .add_user{
+
+        }
+        .add_user input{
+            display: block;
+        }
+        .add_user{
+        width: 90%;
+        margin: 0 auto;
+        }
+        .add_user_div{
+            position: relative;
+        }
+        .content_font{
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+            border:1px solid #cad9ea;
+            padding-left: 10px;
+            color: #666;
+        }
+        .content_1{
+            width: 40%;
+            background-color:#f5fafe;;
+        }
+        .content_2{
+            width: 56%;
+        }
+        .float{
+            float: left;
+        }
+        .clearfix:after{
+            content:'ooo';
+            display:block;
+            clear:both;
+            visibility:hidden;
+            height:0;
+        }
+        .submit {
+            padding: 0 10px;
+            height: 30px;
+            line-height: 30px;
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            cursor: pointer;
+            color: #888;
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+{% endblock %}
+{% block side_box %}
+    <div id="login">
+        <div class="login_text">
+            <ul>
+                <li>
+                    {% if user_identity == 0 %}
+                        欢迎登录，管理员用户：{{ username }}
+                    {% elif user_identity == 1 %}
+                        欢迎登录，教师用户：{{ username }}
+                    {% elif user_identity == 2 %}
+                        欢迎登录，学生用户：{{ username }}
+                    {% endif %}
+                </li>
+                <li><a href="/change_password/">修改密码</a></li>
+                <li><a href="/logout/">退出登录</a></li>
+            </ul>
+        </div>
+    </div>
+{% endblock  %}
+{% block content_box %}
+    <div class="content_box_1">
+    <form action="/change_password/" method="post" class="add_user">
+        <div class="add_user_div">
+            <div><div>旧密码：</div><input type="password" name="old_passwd"></div>
+            <div><div>新密码：</div><input type="password" name="new_passwd_1"></div>
+            <div><div>重复新密码：</div><input type="password" name="new_passwd_2"></div>
+            <input type="submit" value="提交" class="submit">
+            {% csrf_token %}
+        </div>
+    </form>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $("#g").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#g>a").css("color","#FFFFFF");
+        var div_obj = $(".add_user_div").children();
+        console.log(div_obj);
+        for (var i=0;i<div_obj.length-1;i++){
+            div_obj.eq(i).addClass("clearfix");
+            div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+            div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+        }
+    display_info()
+    </script>
+
+{% endblock %}

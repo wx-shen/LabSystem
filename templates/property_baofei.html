@@ -1,0 +1,56 @@
+{% extends "property.html" %}
+{% block content_box %}
+    <div class="content_box_1">
+        <div class="property_title">【待审核申请】</div>
+        <table width="90%" id="mytab"  border="1" class="t1">
+        <thead>
+        <th width="10%">资产编号</th>
+        <th width="10%">资产名称</th>
+        <th width="10%">申请人</th>
+        <th width="10%">资产价格</th>
+        <th width="30%">购入时间</th>
+        <th width="20%">所属项目</th>
+        <th width="10%">操作</th>
+        </thead>
+        {% for i in info_list %}
+            <tr class="a1">
+                <td>{{ i.id }}</td>
+                <td>{{ i.property_name }}</td>
+                <td>{{ i.proposer }}</td>
+                <td>{{ i.price }}</td>
+                <td>{{ i.purchase_time }}</td>
+                <td>{{ i.task_name }}</td>
+                <td>
+                    <button class="scrap">报废</button>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+        </div>
+{% endblock %}
+{% block script %}
+    <script>
+     $("#h").css("background","#3F3F3F").css("color","#FFFFFF");
+        $("#h>a").css("color","#FFFFFF");
+        var div_obj = $(".budget_out_div").children();
+    for (var i=0;i<div_obj.length-1;i++){
+        div_obj.eq(i).addClass("clearfix");
+        div_obj.eq(i).children().eq(0).addClass("content_1").addClass("float").addClass("content_font");
+        div_obj.eq(i).children().eq(1).addClass("content_2").addClass("float").addClass("content_font");
+    }
+    $(".scrap").click(function () {
+        var id = $(this).parent().siblings().first().text();
+        console.log(id);
+        $(this).parent().text("审核通过");
+        $.ajaxSetup({data: {csrfmiddlewaretoken: '{{ csrf_token }}'}});
+        $.ajax({
+            url: "/scrap_ajax/",
+            data: {property_id: id,if_ratify:1},
+            type: "POST",
+            success:function () {
+                alert("资产已报废");
+            }
+        });
+    });
+    </script>
+{% endblock %}
